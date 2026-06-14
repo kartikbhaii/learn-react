@@ -8,6 +8,9 @@
   <body>
     <div class="js-container"></div>
 
+    <!-- loading DayJS external library -->
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
     <!-- including react (which is external library of javascript) -->
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
@@ -16,19 +19,14 @@
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
 
     <script type="text/babel">
-      const button = <button>hello</button>;
-      const para = <p>paragraph of text</p>;
 
-      const div = 
-      (
-        <div>
-          <button>hello</button>
-          <p>paragraph of text</p>
-        </div>
-      );
+
+
+
 
       const container = document.querySelector(".js-container");
-      ReactDOM.createRoot(container).render(div);
+      const root = ReactDOM.createRoot(container);
+      root.render();
     </script>
   </body>
 </html>
