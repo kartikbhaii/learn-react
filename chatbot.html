@@ -10,6 +10,8 @@
 
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
 
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
@@ -25,14 +27,29 @@
         }
 
         function sendMessage() {
-          setChatMessages([
+          const newChatMessages = ([
             ...chatMessages,
             {
               message: inputText,
               sender: "user",
               id: crypto.randomUUID(),
             },
+          ])
+
+          setChatMessages(newChatMessages);
+          
+          // using external library: chatbot.js (created by supersimpledev)
+          const response = Chatbot.getResponse(inputText)
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: response,
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
           ]);
+
+          setInputText('')
         }
 
         return (
@@ -41,6 +58,7 @@
               placeholder="Send a message to Chatbot"
               size="30"
               onChange={saveInputText}
+              value={inputText}
             />
             <button onClick={sendMessage}>Send</button>
           </>
