@@ -52,6 +52,12 @@
           setInputText('')
         }
 
+        function keywordButton(event){
+          (event.key==='Enter' && sendMessage())
+          
+
+        }
+
         return (
           <>
             <input
@@ -59,6 +65,8 @@
               size="30"
               onChange={saveInputText}
               value={inputText}
+              onKeyDown={keywordButton}
+
             />
             <button onClick={sendMessage}>Send</button>
           </>
