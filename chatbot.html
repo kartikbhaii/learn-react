@@ -21,12 +21,18 @@
     <script type="text/babel">
         function ChatInput({ chatMessages, setChatMessages }) {
             const [inputText, setInputText] = React.useState("");
+            const [isLoading, setIsLoading] = React.useState(false)
 
             function saveInputText(event) {
                 setInputText(event.target.value);
             }
 
             async function sendMessage() {
+                if (isLoading || inputText === '') {
+                    return;
+                }
+                setInputText('');
+
                 const newChatMessages = [
                     ...chatMessages,
                     {
@@ -35,7 +41,18 @@
                         id: crypto.randomUUID(),
                     },
                 ];
-                setChatMessages(newChatMessages);
+
+                const loadingChatMessages = [
+                    ...newChatMessages,
+                    {
+                        message: "Loading...",
+                        sender: "robot",
+                        id: crypto.randomUUID(),
+                    },
+                ];
+
+                setChatMessages(loadingChatMessages)
+                setInputText("");
                 const response = await Chatbot.getResponseAsync(inputText);
                 setChatMessages([
                     ...newChatMessages,
@@ -45,13 +62,20 @@
                         id: crypto.randomUUID(),
                     },
                 ]);
-
-                setInputText("");
+                setIsLoading(false)
             }
 
+
+
+
+
             function keywordButton(event) {
-                (event.key === "Enter" && sendMessage())
-                    (event.key === "Escape" && setInputText(""))
+                if (event.key === "Enter") {
+                    sendMessage();
+                }
+                else if (event.key === "Escape") {
+                    setInputText("");
+                }
             }
 
 
@@ -64,7 +88,11 @@
                         value={inputText}
                         onKeyDown={keywordButton}
                     />
-                    <button onClick={sendMessage}>Send</button>
+                    <button
+                        onClick={sendMessage}
+                        disabled={isLoading || inputText === ""}>
+                        Send
+                    </button>
                 </>
             );
         }
@@ -88,6 +116,7 @@
                                 message={chatMessage.message}
                                 sender={chatMessage.sender}
                                 key={chatMessage.id}
+
                             />
                         );
                     })}
