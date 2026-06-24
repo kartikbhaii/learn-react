@@ -7,6 +7,8 @@ function ChatMessages({ chatMessages }) {
 
   if (chatMessages.length === 0) {
     return (
+
+      
       <p className="welcome-message">
         Welcome to the chatbot project! Send a message using the textbox below
       </p>
@@ -20,6 +22,7 @@ function ChatMessages({ chatMessages }) {
             message={chatMessage.message}
             sender={chatMessage.sender}
             key={chatMessage.id}
+            time={chatMessage.time}
           />
         );
       })}

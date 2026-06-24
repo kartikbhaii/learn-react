@@ -1,4 +1,5 @@
 import { useState } from "react";
+import dayjs from "dayjs";
 import { Chatbot } from "supersimpledev"
 import "./ChatInput.css"
 
@@ -14,12 +15,19 @@ export function ChatInput({ chatMessages, setChatMessages }) {
     setInputText(event.target.value);
   }
 
+  
+
+
   async function sendMessage() {
+    const currentTime = dayjs().format("hh:mm A")
+ 
     if (isLoading || inputText === "") {
       return;
     }
     setInputText("");
     setIsLoading(true);
+
+    
 
     const newChatMessages = [
       ...chatMessages,
@@ -27,6 +35,7 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         message: inputText,
         sender: "user",
         id: crypto.randomUUID(),
+        time: currentTime
       },
     ];
 
@@ -53,6 +62,7 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         message: response,
         sender: "robot",
         id: crypto.randomUUID(),
+        time: currentTime
       },
     ]);
     setIsLoading(false);
@@ -64,6 +74,10 @@ export function ChatInput({ chatMessages, setChatMessages }) {
     } else if (event.key === "Escape") {
       setInputText("");
     }
+  }
+
+  function removeMessages() {
+    setChatMessages([])
   }
 
   return (
@@ -82,6 +96,12 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         className="send-button"
       >
         Send
+      </button>
+      <button 
+      onClick={removeMessages}
+      className="clear-button"
+      >
+        Clear
       </button>
     </div>
   );
